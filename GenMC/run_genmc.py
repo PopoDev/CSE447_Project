@@ -118,7 +118,7 @@ def eval(model, test_examples, tokenizer, eval_batch_size, choice_num, max_len, 
 
 
 
-dataset = 'arc_challenge'
+dataset = 'obqa'
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_path",
@@ -128,13 +128,13 @@ if __name__ == '__main__':
                         default=4,
                         type=int)
     parser.add_argument("--data_path_train",
-                        default=f'./data/{dataset}/in_house/train.jsonl',
+                        default=f'./data/{dataset}/train.jsonl',
                         type=str)
     parser.add_argument("--data_path_dev",
-                        default=f'./data/{dataset}/in_house/dev.jsonl',
+                        default=f'./data/{dataset}/dev.jsonl',
                         type=str)
     parser.add_argument("--data_path_test",
-                        default=f'./data/{dataset}/in_house/test.jsonl',
+                        default=f'./data/{dataset}/test.jsonl',
                         type=str)
     parser.add_argument("--results_save_path",
                         default='./results/',
@@ -202,7 +202,7 @@ if __name__ == '__main__':
                         default=None,
                         help="The number of retrieved sentences")
     args = parser.parse_args()
-    file_name = f'lr_{args.lr}_seed_{args.seed}_bs_{args.train_batch_size}_ga_{args.gradient_accumulation_steps}_layer_num_{args.num_hidden_layers}_alpha_{args.alpha}_beta_{args.beta}'
+    file_name = f'epoch={args.epoch_num}-lr={args.lr}-seed={args.seed}-bs={args.train_batch_size}-ga={args.gradient_accumulation_steps}-layer_num={args.num_hidden_layers}-alpha={args.alpha}_beta={args.beta}'
     output_model_path = './outputs/' + args.name_save_prix + '/' + file_name + "/"
     path_save_result = './results/' + args.name_save_prix + '/' + file_name + "/"
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
