@@ -2,7 +2,7 @@ import torch
 import pytorch_lightning as pl
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from sentence_transformers import util
-from sentence_similarity import SentenceBERTModel
+from model.sentence_similarity import SentenceBERTModel
 
 class RobertaPromptForMultipleChoice(pl.LightningModule):
     def __init__(self, sbert_model):
