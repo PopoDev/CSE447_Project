@@ -294,7 +294,7 @@ if __name__ == '__main__':
             save_dataset(path_save_result + '/test.csv', results_test)
             best_dev_acc, best_test_acc, best_dev_rouge_score, best_test_rouge_score = dev_acc, test_acc, dev_rouge_score, test_rouge_score
 
-            # save_model(output_model_path, model, optimizer)
+            save_model(output_model_path, model, optimizer)
             print('new best dev acc:', dev_acc, 'test_acc:', test_acc, 'rouge:', dev_rouge_score)
 
         if early_stop >= 10:
