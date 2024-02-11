@@ -4,7 +4,7 @@ from sentence_transformers import SentenceTransformer, util
 
 
 class SentenceBERTModel(pl.LightningModule):
-    def __init__(self, data_path_sentences):
+    def __init__(self, data_path_sentences='./data/openbook.txt'):
         super().__init__()
         self.model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
 
