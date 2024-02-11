@@ -20,25 +20,18 @@ class RobertaPromptForMultipleChoice(pl.LightningModule):
         prompt_output = self.roberta_model(**prompt_input)
         choice_outputs = self.roberta_model(**choice_inputs)
 
-        # Compute embeddings for prompt and choices
-        prompt_embedding = prompt_output.last_hidden_state[:, 0, :]
-        choice_embeddings = choice_outputs.last_hidden_state[:, 0, :]
-
-        # Compute similarity between prompt and choices
-        similarity_scores = util.cos_sim(prompt_embedding, choice_embeddings)
-
-        return similarity_scores
+        return choice_outputs[0][:, 1]
 
 # Example usage
 sbert_model = SentenceBERTModel()
 model = RobertaPromptForMultipleChoice(sbert_model)
 
-prompt = "Which of the following animals is a mammal?"
+prompt = "Which animal is considered a predator?"
 choices = [
-    "a) Dog",
-    "b) Parrot",
-    "c) Snake",
-    "d) Dolphin",
+    "a) ant",
+    "b) snake",
+    "c) elephant",
+    "d) giraphe",
 ]
 
 similarity_scores = model(prompt, choices)
