@@ -4,14 +4,14 @@ from sentence_transformers import SentenceTransformer, util
 
 
 class SentenceBERTModel(pl.LightningModule):
-    def __init__(self, sentence_path='../data/openbook.txt'):
+    def __init__(self, data_path_sentences):
         super().__init__()
         self.model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
 
-        with open(sentence_path, 'r') as file:
+        with open(data_path_sentences, 'r') as file:
             self.sentences = [line.strip().strip('"') for line in file]
 
-        print(f"Loaded {len(self.sentences)} sentences from {sentence_path}")
+        print(f"Loaded {len(self.sentences)} sentences from {data_path_sentences}")
         print(f"Example sentences: {self.sentences[:3]}")
 
     def forward(self, sentences):
