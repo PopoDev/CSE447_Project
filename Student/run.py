@@ -1,3 +1,4 @@
+import torch
 from model.multiple_choice import RobertaPromptForMultipleChoice
 from model.sentence_similarity import SentenceBERTModel
 from arguments import parse_arguments
@@ -11,16 +12,16 @@ def main():
     roberta_model = RobertaPromptForMultipleChoice(sbert_model=sbert_model)
 
     # Example multiple-choice question
-    question = "Which of the following animals is a mammal?"
+    question = "Frilled sharks and angler fish live far beneath the surface of the ocean, which is why they are known as"
     choices = [
-        "a) Dog",
-        "b) Parrot",
-        "c) Snake",
-        "d) Dolphin",
+        "A) Deep sea animals",
+        "B) Fish",
+        "C) Long Sea Fish",
+        "D) Far Sea Animals",
     ]
+    labels = torch.tensor(0).unsqueeze(0)  # choice A is the correct answer
 
-    # Get similarity scores from Roberta model
-    answer = roberta_model(question, choices)
+    answer = roberta_model(question, choices, labels)
     print(f"Answer for question='{question}': {answer}")
 
 if __name__ == "__main__":
