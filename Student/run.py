@@ -4,10 +4,10 @@ from arguments import parse_arguments
 
 def main():
     # Parse arguments
-    args = parse_arguments()
+    train_args, model_args = parse_arguments()
 
     # Load models
-    sbert_model = SentenceBERTModel(data_path_sentences=args.data_path_sentences)
+    sbert_model = SentenceBERTModel(data_path_sentences=model_args.data_path_sentences)
     roberta_model = RobertaPromptForMultipleChoice(sbert_model=sbert_model)
 
     # Example multiple-choice question
