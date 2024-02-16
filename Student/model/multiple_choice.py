@@ -1,38 +1,46 @@
 import torch
 import pytorch_lightning as pl
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from sentence_transformers import util
+from transformers import AutoTokenizer, RobertaForMultipleChoice
 from model.sentence_similarity import SentenceBERTModel
 
 class RobertaPromptForMultipleChoice(pl.LightningModule):
     def __init__(self, sbert_model):
         super().__init__()
-        self.sbert_model = sbert_model
-        self.roberta_tokenizer = AutoTokenizer.from_pretrained("roberta-base")
-        self.roberta_model = AutoModelForSequenceClassification.from_pretrained("roberta-base")
+        self.sbert = sbert_model
+        self.tokenizer = AutoTokenizer.from_pretrained("roberta-base")
+        self.model = RobertaForMultipleChoice.from_pretrained("roberta-base")
 
-    def forward(self, prompt, choices):
-        # Tokenize prompt and choices
-        prompt_input = self.roberta_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True)
-        choice_inputs = self.roberta_tokenizer(choices, return_tensors="pt", padding=True, truncation=True)
+    def forward(self, question, choices, labels):
+        prefix = self.sbert.get_top_similar_sentences(question + ', '.join(choices), top_n=3)
+        prompt_prefix = "Given the following facts: " + ', '.join(prefix) + " answer the question. "
+        prompt = prompt_prefix + question
+        print("Prompt:", prompt)
 
-        # Forward pass through Roberta model
-        prompt_output = self.roberta_model(**prompt_input)
-        choice_outputs = self.roberta_model(**choice_inputs)
+        encoding = self.tokenizer([prompt]*len(choices), choices, return_tensors="pt", padding=True)
+        outputs = self.model(**{k: v.unsqueeze(0) for k, v in encoding.items()}, labels=labels)
 
-        return choice_outputs[0][:, 1]
+        loss = outputs.loss
+        logits = outputs.logits
+        
+        probabilities = torch.softmax(logits, dim=1)
+        answer_index = torch.argmax(probabilities).item()
+        print('Probabilities:', probabilities)
+        print('Answer index:', answer_index)
+
+        return choices[answer_index]
 
 # Example usage
 sbert_model = SentenceBERTModel()
 model = RobertaPromptForMultipleChoice(sbert_model)
 
-prompt = "Which animal is considered a predator?"
+question = "Which animal is considered a predator?"
 choices = [
     "a) ant",
     "b) snake",
     "c) elephant",
     "d) giraphe",
 ]
+labels = torch.tensor(1).unsqueeze(0)  # choice b is the correct answer
 
-similarity_scores = model(prompt, choices)
-print(f"Similarity scores for prompt='{prompt}' and choices={choices}: {similarity_scores}")
+answer = model(question, choices, labels)
+print(f"Answer for question='{question}': {answer}")

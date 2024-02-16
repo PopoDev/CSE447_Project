@@ -11,7 +11,7 @@ def main():
     roberta_model = RobertaPromptForMultipleChoice(sbert_model=sbert_model)
 
     # Example multiple-choice question
-    prompt = "Which of the following animals is a mammal?"
+    question = "Which of the following animals is a mammal?"
     choices = [
         "a) Dog",
         "b) Parrot",
@@ -20,9 +20,8 @@ def main():
     ]
 
     # Get similarity scores from Roberta model
-    similarity_scores = roberta_model(prompt, choices)
-
-    print(f"Similarity scores for prompt='{prompt}' and choices={choices}: {similarity_scores}")
+    answer = roberta_model(question, choices)
+    print(f"Answer for question='{question}': {answer}")
 
 if __name__ == "__main__":
     main()
