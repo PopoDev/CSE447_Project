@@ -4,16 +4,16 @@ from sentence_transformers import SentenceTransformer, util
 
 
 class SentenceBERTModel(pl.LightningModule):
-    def __init__(self, data_path_sentences="./data/openbook.txt"):
+    def __init__(self, path="./data/openbook.txt"):
         super().__init__()
         self.model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
-        prefix = "SentenceBERT"
+        name = "SentenceBERT"
 
-        with open(data_path_sentences, "r") as file:
+        with open(path, "r") as file:
             self.sentences = [line.strip().strip('"') for line in file]
 
-        print(f"{prefix} Loaded {len(self.sentences)} sentences from {data_path_sentences}")
-        print(f"{prefix} Example sentences: {self.sentences[:3]}")
+        print(f"{name} Loaded {len(self.sentences)} sentences from {path}")
+        print(f"{name} Example sentences: {self.sentences[:3]}")
 
     def forward(self, sentences):
         return self.model.encode(sentences, convert_to_tensor=True)

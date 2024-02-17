@@ -1,0 +1,1 @@
+mixtral7b_endpoint = 'projects/cse447-finalproject/locations/us-west1/endpoints/8557323077120163840'

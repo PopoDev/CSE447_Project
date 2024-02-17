@@ -8,7 +8,7 @@ def main():
     train_args, model_args = parse_arguments()
 
     # Load models
-    sbert_model = SentenceBERTModel(data_path_sentences=model_args.data_path_sentences)
+    sbert_model = SentenceBERTModel(path=model_args.obqa_book_path)
     roberta_model = RobertaPromptForMultipleChoice(sbert_model=sbert_model)
 
     # Example multiple-choice question
