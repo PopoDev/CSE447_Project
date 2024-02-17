@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import Dataset
 
 class OBQADataset(Dataset):
-    def __init__(self, data, tokenizer, max_length=512, sbert_model=None):
+    def __init__(self, data, tokenizer, max_length=128, sbert_model=None):
         self.data = data
         self.tokenizer = tokenizer
         self.max_length = max_length
