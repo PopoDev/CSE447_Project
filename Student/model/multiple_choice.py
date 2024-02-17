@@ -8,6 +8,6 @@ class RobertaPromptForMultipleChoice(torch.nn.Module):
         self.model = RobertaForMultipleChoice.from_pretrained("roberta-base")
 
     def forward(self, inputs, labels):
-        outputs = self.model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
+        outputs = self.model(**inputs, labels=labels)
         return outputs
     
