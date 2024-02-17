@@ -15,7 +15,7 @@ def main():
     model = RobertaPromptForMultipleChoice()
     print(model.parameters)
 
-    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(sbert_model=None)
+    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(tokenizer, sbert_model=None)
 
     trainer = Trainer(
         model=model,
