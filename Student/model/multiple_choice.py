@@ -7,7 +7,7 @@ class RobertaPromptForMultipleChoice(torch.nn.Module):
         self.tokenizer = AutoTokenizer.from_pretrained("roberta-base")
         self.model = RobertaForMultipleChoice.from_pretrained("roberta-base")
 
-    def forward(self, inputs, labels):
-        outputs = self.model(**inputs, labels=labels)
+    def forward(self, input_ids, attention_mask, labels):
+        outputs = self.model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
         return outputs
     
