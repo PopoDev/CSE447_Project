@@ -1,5 +1,4 @@
 from datasets import load_dataset
-from transformers import AutoTokenizer
 from dataloader.obqa_dataset import OBQADataset
 
 def load_openbookqa_data():
@@ -10,12 +9,8 @@ def load_openbookqa_data():
 
     return train_data, val_data, test_data
 
-def get_openbookqa_dataset(sbert_model=None):
-    tokenizer = AutoTokenizer.from_pretrained("roberta-base")
-
+def get_openbookqa_dataset(tokenizer, sbert_model=None):
     train_dataset, val_dataset, test_dataset = map(lambda data: OBQADataset(data, tokenizer, sbert_model), load_openbookqa_data())
     print(f"Train dataset sample: {train_dataset[0]}")
 
     return train_dataset, val_dataset, test_dataset
-
-

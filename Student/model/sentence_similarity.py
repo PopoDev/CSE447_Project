@@ -1,9 +1,8 @@
 import torch
-import pytorch_lightning as pl
 from sentence_transformers import SentenceTransformer, util
 
 
-class SentenceBERTModel(pl.LightningModule):
+class SentenceBERTModel(torch.nn.Module):
     def __init__(self, path="./data/openbook.txt"):
         super().__init__()
         self.model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")

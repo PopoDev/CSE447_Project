@@ -1,5 +1,5 @@
 import torch
-from transformers import Trainer
+from transformers import Trainer, AutoTokenizer
 from model.multiple_choice import RobertaPromptForMultipleChoice
 from model.sentence_similarity import SentenceBERTModel
 from arguments import parse_arguments
@@ -10,12 +10,10 @@ def main():
     train_args, model_args = parse_arguments()
 
     # Load models
+    tokenizer = AutoTokenizer.from_pretrained("roberta-base")
     sbert = SentenceBERTModel(path=model_args.obqa_book_path)
     model = RobertaPromptForMultipleChoice()
     print(model.parameters)
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
 
     train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(sbert_model=None)
 

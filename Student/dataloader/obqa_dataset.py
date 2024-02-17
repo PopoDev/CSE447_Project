@@ -10,7 +10,7 @@ class OBQADataset(Dataset):
 
     def get_label_tensor(self, label: str):
         mapping = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
-        return torch.tensor(mapping[label]).unsqueeze(0)
+        return torch.tensor(mapping[label])
     
     def __len__(self):
         return len(self.data)
