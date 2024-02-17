@@ -1,3 +1,4 @@
+import torch
 from transformers import Trainer
 from model.multiple_choice import RobertaPromptForMultipleChoice
 from model.sentence_similarity import SentenceBERTModel
@@ -12,6 +13,9 @@ def main():
     sbert = SentenceBERTModel(path=model_args.obqa_book_path)
     model = RobertaPromptForMultipleChoice()
     print(model.parameters)
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
 
     train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(sbert_model=None)
 
