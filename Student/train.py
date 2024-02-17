@@ -11,7 +11,7 @@ def main():
     # Load models
     sbert = SentenceBERTModel(path=model_args.obqa_book_path)
     model = RobertaPromptForMultipleChoice()
-    print(model.parameters())
+    print(model.parameters)
 
     train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(sbert_model=None)
 
