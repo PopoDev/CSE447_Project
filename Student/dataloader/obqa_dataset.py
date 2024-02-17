@@ -28,8 +28,8 @@ class OBQADataset(Dataset):
 
         prompt = prompt_prefix + question
 
-        encoding = self.tokenizer([prompt]*len(choices), choices, return_tensors="pt", padding=True, truncation=True, max_length=self.max_length)
+        encoding = self.tokenizer([prompt]*len(choices), choices, return_tensors="pt", padding='max_length', truncation=True, max_length=self.max_length)
         encoding['labels'] = label
-        
+
         return encoding
     
