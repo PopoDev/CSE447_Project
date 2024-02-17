@@ -10,10 +10,10 @@ def main():
 
     # Load models
     sbert = SentenceBERTModel(data_path_sentences=model_args.data_path_sentences)
-    model = RobertaPromptForMultipleChoice(sbert_model=sbert)
+    model = RobertaPromptForMultipleChoice()
     print(model.parameters())
 
-    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset()
+    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(sbert_model=None)
 
     trainer = Trainer(
         model=model,
