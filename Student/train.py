@@ -25,6 +25,9 @@ def main():
     )
     
     trainer.train()
+    trainer.eval()
+    
+    trainer.save_model(output_dir=train_args.output_dir)
 
 if __name__ == "__main__":
     main()
