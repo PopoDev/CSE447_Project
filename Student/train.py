@@ -28,9 +28,8 @@ def main():
     )
     
     trainer.train()
-
-
-    trainer.evaluate()
+    trainer.evaluate(eval_dataset=val_dataset)
+    trainer.predict(test_dataset=test_dataset)
     
     trainer.save_model(output_dir=train_args.output_dir)
 
