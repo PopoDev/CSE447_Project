@@ -38,7 +38,9 @@ def compute_metrics(eval_pred):
     accuracy = evaluate.load("accuracy")
     predictions, labels = eval_pred
     predictions = np.argmax(predictions, axis=1)
-    return accuracy.compute(predictions=predictions, references=labels)
+    metric = accuracy.compute(predictions=predictions, references=labels)
+    print("Accuracy:", metric)
+    return metric
 
 
 if __name__ == "__main__":
