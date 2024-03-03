@@ -1,4 +1,6 @@
 import torch
+import evaluate
+import numpy as np
 from transformers import Trainer, AutoTokenizer
 from model.multiple_choice import RobertaPromptForMultipleChoice
 from model.sentence_similarity import SentenceBERTModel
@@ -22,12 +24,23 @@ def main():
         args=train_args,
         train_dataset=train_dataset,
         eval_dataset=val_dataset,  # change to test dataset for final evaluation
+        compute_metrics=compute_metrics,
     )
     
     trainer.train()
-    trainer.eval()
+
+
+    trainer.evaluate()
     
     trainer.save_model(output_dir=train_args.output_dir)
+
+
+def compute_metrics(eval_pred):
+    accuracy = evaluate.load("accuracy")
+    predictions, labels = eval_pred
+    predictions = np.argmax(predictions, axis=1)
+    return accuracy.compute(predictions=predictions, references=labels)
+
 
 if __name__ == "__main__":
     main()
