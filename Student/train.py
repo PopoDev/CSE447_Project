@@ -24,6 +24,10 @@ def main():
         args=train_args,
         train_dataset=train_dataset,
         eval_dataset=val_dataset,  # change to test dataset for final evaluation
+        evaluation_strategy="epoch",
+        save_strategy="epoch",
+        save_total_limit=5,
+        load_best_model_at_end=True,
         compute_metrics=compute_metrics,
     )
     
