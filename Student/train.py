@@ -10,19 +10,18 @@ from dataloader.dataset import get_openbookqa_dataset
 def main():
     # Parse arguments
     train_args, model_args = parse_arguments()
-
-    # Load models
-    tokenizer = AutoTokenizer.from_pretrained("roberta-base")
-    sbert = SentenceBERTModel(path=model_args.obqa_book_path)
-    model = RobertaPromptForMultipleChoice()
-    print(model.parameters)
-
-    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(tokenizer, sbert_model=None)
-
     train_args.evaluation_strategy = "epoch"
     train_args.save_strategy = "epoch"
     train_args.save_total_limit = 5
     train_args.load_best_model_at_end = True
+
+    # Load models
+    tokenizer = AutoTokenizer.from_pretrained("roberta-base")
+    sbert = SentenceBERTModel(path=model_args.obqa_book_path) if model_args.use_book else None
+    model = RobertaPromptForMultipleChoice()
+    print(model.parameters)
+
+    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(tokenizer, sbert_model=sbert)
 
     trainer = Trainer(
         model=model,
@@ -36,7 +35,7 @@ def main():
     trainer.evaluate(eval_dataset=val_dataset)
     trainer.predict(test_dataset=test_dataset)
     
-    trainer.save_model(output_dir=train_args.output_dir)
+    trainer.save_pretrained(output_dir=train_args.output_dir)
 
 
 def compute_metrics(eval_pred):

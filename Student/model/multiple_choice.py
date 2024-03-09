@@ -1,7 +1,6 @@
-import torch
-from transformers import RobertaForMultipleChoice
+from transformers import RobertaForMultipleChoice, RobertaPreTrainedModel
 
-class RobertaPromptForMultipleChoice(torch.nn.Module):
+class RobertaPromptForMultipleChoice(RobertaPreTrainedModel):
     def __init__(self):
         super().__init__()
         self.model = RobertaForMultipleChoice.from_pretrained("roberta-base")

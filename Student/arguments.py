@@ -9,6 +9,11 @@ class ModelArguments:
         metadata={"help": "Path to the OpenBookQA book data"}
     )
 
+    use_book: Optional[bool] = field(
+        default=True,
+        metadata={"help": "Whether to use the OpenBookQA book data"}
+    )
+
 def parse_arguments():
     parser = HfArgumentParser((TrainingArguments, ModelArguments))
     args = parser.parse_args_into_dataclasses()

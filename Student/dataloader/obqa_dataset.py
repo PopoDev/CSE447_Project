@@ -8,6 +8,8 @@ class OBQADataset(Dataset):
         self.max_length = max_length
         self.sbert = sbert_model
 
+        print(f"Loaded {len(self.data)} samples from OpenBookQA dataset {'with' if sbert_model is not None else 'without'} SentenceBERT model.")
+
     def get_label_tensor(self, label: str):
         mapping = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
         return torch.tensor(mapping[label])
@@ -24,7 +26,7 @@ class OBQADataset(Dataset):
         prompt_prefix = ""
         if self.sbert:
             clues = self.sbert.get_top_similar_sentences(question + ', '.join(choices), top_n=3)
-            prompt_prefix = "Given the following facts: " + ', '.join(clues) + ". "
+            prompt_prefix = ', '.join(clues) + ". "
 
         prompt = prompt_prefix + question
 
