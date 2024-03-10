@@ -9,10 +9,10 @@ def obqa_facts(file):
             entry = json.loads(line.strip())
             transformed_entry = {
                 'id': entry['id'],
-                'question': entry['question_stem'],
+                'question_stem': entry['question_stem'],
+                'choices': {'text': entry['choices']['text']},
+                'answerKey': entry['answerKey'],
                 'facts': entry['facts'],
-                'choices': entry['choices']['text'],
-                'answerKey': entry['answerKey']
             }
             data.append(transformed_entry)
         return data    
