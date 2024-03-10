@@ -1,8 +1,7 @@
-import torch
 import evaluate
 import numpy as np
-from transformers import Trainer, AutoTokenizer
-from model.multiple_choice import RobertaPromptForMultipleChoice
+from transformers import Trainer, AutoTokenizer, AutoConfig
+from model.multiple_choice import ModelForMultipleChoice
 from model.sentence_similarity import SentenceBERTModel
 from arguments import parse_arguments
 from dataloader.dataset import get_openbookqa_dataset
@@ -16,9 +15,11 @@ def main():
     train_args.load_best_model_at_end = True
 
     # Load models
-    tokenizer = AutoTokenizer.from_pretrained("roberta-base")
+    model = "roberta-base"
+    tokenizer = AutoTokenizer.from_pretrained(model)
+    config = AutoConfig.from_pretrained(model)
     sbert = SentenceBERTModel(path=model_args.obqa_book_path) if model_args.use_book else None
-    model = RobertaPromptForMultipleChoice()
+    model = ModelForMultipleChoice(model=model, config=config)
     print(model.parameters)
 
     train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(tokenizer, sbert_model=sbert)

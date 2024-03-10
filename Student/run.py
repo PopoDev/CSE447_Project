@@ -1,5 +1,5 @@
 import torch
-from model.multiple_choice import RobertaPromptForMultipleChoice
+from model.multiple_choice import ModelForMultipleChoice
 from model.sentence_similarity import SentenceBERTModel
 from arguments import parse_arguments
 
@@ -9,7 +9,7 @@ def main():
 
     # Load models
     sbert_model = SentenceBERTModel(path=model_args.obqa_book_path)
-    roberta_model = RobertaPromptForMultipleChoice(sbert_model=sbert_model)
+    roberta_model = ModelForMultipleChoice(sbert_model=sbert_model)
 
     # Example multiple-choice question
     question = "Frilled sharks and angler fish live far beneath the surface of the ocean, which is why they are known as"

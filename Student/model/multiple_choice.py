@@ -1,9 +1,9 @@
-from transformers import RobertaForMultipleChoice, RobertaPreTrainedModel
+from transformers import AutoModelForMultipleChoice, PreTrainedModel
 
-class RobertaPromptForMultipleChoice(RobertaPreTrainedModel):
-    def __init__(self):
-        super().__init__()
-        self.model = RobertaForMultipleChoice.from_pretrained("roberta-base")
+class ModelForMultipleChoice(PreTrainedModel):
+    def __init__(self, model, config):
+        super().__init__(config)
+        self.model = AutoModelForMultipleChoice.from_pretrained(model)
 
     def forward(self, input_ids, attention_mask, labels):
         outputs = self.model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
