@@ -19,7 +19,7 @@ def main():
     print(model.parameters)
     print(model.config.to_dict())
 
-    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(tokenizer, model_args.use_book)
+    train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(tokenizer, model_args.use_book, model_args.n_facts)
 
     trainer = Trainer(
         model=model,

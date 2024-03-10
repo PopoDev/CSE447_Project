@@ -15,8 +15,8 @@ def load_openbookqa_data(use_book=True):
 
     return train_data, val_data, test_data
 
-def get_openbookqa_dataset(tokenizer, use_book=True):
-    train_dataset, val_dataset, test_dataset = map(lambda data: OBQADataset(data, tokenizer, use_book=use_book), load_openbookqa_data(use_book))
+def get_openbookqa_dataset(tokenizer, use_book=True, n_facts=3):
+    train_dataset, val_dataset, test_dataset = map(lambda data: OBQADataset(data, tokenizer, use_book=use_book, n_facts=n_facts), load_openbookqa_data(use_book))
     print(f"Train dataset sample: {train_dataset[0]}")
 
     return train_dataset, val_dataset, test_dataset
