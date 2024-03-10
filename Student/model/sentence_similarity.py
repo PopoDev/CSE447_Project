@@ -3,9 +3,9 @@ from sentence_transformers import SentenceTransformer, util
 
 
 class SentenceBERTModel(torch.nn.Module):
-    def __init__(self, path="./data/openbook.txt"):
+    def __init__(self, path="./data/openbook.txt", show_progress_bar=False):
         super().__init__()
-        self.model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+        self.model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2", show_progress_bar=show_progress_bar)
         name = "SentenceBERT"
 
         with open(path, "r") as file:
