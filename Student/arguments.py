@@ -7,12 +7,6 @@ from typing import Optional
 class ModelArguments:
     model: Optional[str] = field(
         default="microsoft/deberta-v3-base",
-        choices=[
-            "microsoft/deberta-v3-base",
-            "microsoft/deberta-v3-large",
-            "roberta-base",
-            "roberta-large",
-        ],
         metadata={"help": "The model to use"},
     )
 
