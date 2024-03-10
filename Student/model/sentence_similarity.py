@@ -5,7 +5,8 @@ from sentence_transformers import SentenceTransformer, util
 class SentenceBERTModel(torch.nn.Module):
     def __init__(self, path="./data/openbook.txt", show_progress_bar=False):
         super().__init__()
-        self.model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2", show_progress_bar=show_progress_bar)
+        self.model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+        self.show_progress_bar = show_progress_bar
         name = "SentenceBERT"
 
         with open(path, "r") as file:
@@ -15,7 +16,7 @@ class SentenceBERTModel(torch.nn.Module):
         print(f"{name} Example sentences: {self.sentences[:3]}")
 
     def forward(self, sentences):
-        return self.model.encode(sentences, convert_to_tensor=True)
+        return self.model.encode(sentences, convert_to_tensor=True, show_progress_bar=self.show_progress_bar)
 
     def get_top_similar_sentences(self, compared_sentence, top_n=3):
         # Compute embeddings
