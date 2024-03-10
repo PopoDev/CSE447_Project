@@ -33,16 +33,16 @@ if __name__ == "__main__":
         data = add_openbook_facts(train_data, top_n=top_n, debug=args.debug)
         for item in data:
             file.write(json.dumps(item) + "\n")
-        print(f"Saved {len(train_data)}*{top_n} facts to ./data/train.facts.jsonl")
+        print(f"Saved {len(data)}*{top_n} facts to ./data/train.facts.jsonl")
 
     with open('./data/dev.facts.jsonl', 'w') as file:
         data = add_openbook_facts(val_data, top_n=top_n, debug=args.debug)
         for item in data:
             file.write(json.dumps(item) + "\n")
-        print(f"Saved {len(val_data)}*{top_n} facts to ./data/dev.facts.jsonl")
+        print(f"Saved {len(data)}*{top_n} facts to ./data/dev.facts.jsonl")
 
     with open('./data/test.facts.jsonl', 'w') as file:
         data = add_openbook_facts(test_data, top_n=top_n, debug=args.debug)
         for item in data:
             file.write(json.dumps(item) + "\n")
-        print(f"Saved {len(test_data)}*{top_n} facts to ./data/test.facts.jsonl")
+        print(f"Saved {len(data)}*{top_n} facts to ./data/test.facts.jsonl")
