@@ -13,9 +13,8 @@ def main():
     train_args.load_best_model_at_end = True
 
     # Load models
-    model = "microsoft/deberta-v3-base"
-    tokenizer = AutoTokenizer.from_pretrained(model)
-    model = AutoModelForMultipleChoice.from_pretrained(model)
+    tokenizer = AutoTokenizer.from_pretrained(model_args.model)
+    model = AutoModelForMultipleChoice.from_pretrained(model_args.model)
     print(model.parameters)
     print(model.config.to_dict())
 
