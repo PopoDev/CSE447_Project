@@ -2,10 +2,11 @@ import torch
 from torch.utils.data import Dataset
 
 class OBQADataset(Dataset):
-    def __init__(self, data, tokenizer, use_book=True, max_length=128):
+    def __init__(self, data, tokenizer, use_book=True, n_facts=3, max_length=128):
         self.data = data
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.n_facts = n_facts
         self.use_book = use_book
 
         print(f"Loaded {len(self.data)} samples from OpenBookQA dataset {'with' if use_book else 'without'} facts from the book")
@@ -25,7 +26,7 @@ class OBQADataset(Dataset):
 
         prompt_prefix = ""
         if self.use_book:
-            facts = item['facts']
+            facts = item['facts'][:self.n_facts]
             prompt_prefix = ', '.join(facts) + ". "
 
         prompt = prompt_prefix + question

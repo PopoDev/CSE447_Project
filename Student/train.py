@@ -1,7 +1,6 @@
 import evaluate
 import numpy as np
-from transformers import Trainer, AutoTokenizer, AutoConfig
-from model.multiple_choice import ModelForMultipleChoice
+from transformers import Trainer, AutoTokenizer, AutoModelForMultipleChoice
 from arguments import parse_arguments
 from dataloader.dataset import get_openbookqa_dataset
 
@@ -14,11 +13,11 @@ def main():
     train_args.load_best_model_at_end = True
 
     # Load models
-    model = "roberta-base"
+    model = "microsoft/deberta-v3-base"
     tokenizer = AutoTokenizer.from_pretrained(model)
-    config = AutoConfig.from_pretrained(model)
-    model = ModelForMultipleChoice(model=model, config=config)
+    model = AutoModelForMultipleChoice.from_pretrained(model)
     print(model.parameters)
+    print(model.config.to_dict())
 
     train_dataset, val_dataset, test_dataset = get_openbookqa_dataset(tokenizer, model_args.use_book)
 
