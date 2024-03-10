@@ -34,7 +34,7 @@ def main():
     trainer.evaluate(eval_dataset=val_dataset)
     trainer.predict(test_dataset=test_dataset)
     
-    trainer.save_pretrained(output_dir=train_args.output_dir)
+    model.save_pretrained(train_args.output_dir)
 
 
 def compute_metrics(eval_pred):
