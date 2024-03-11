@@ -2,14 +2,15 @@ import torch
 from torch.utils.data import Dataset
 
 class OBQADataset(Dataset):
-    def __init__(self, data, tokenizer, use_book=True, n_facts=3, max_length=128):
+    def __init__(self, data, tokenizer, use_book=True, n_facts=3, use_clue=True, max_length=128):
         self.data = data
         self.tokenizer = tokenizer
         self.max_length = max_length
         self.n_facts = n_facts
         self.use_book = use_book
+        self.use_clue = use_clue
 
-        print(f"Loaded {len(self.data)} samples from OpenBookQA dataset {'with' if use_book else 'without'} facts from the book")
+        print(f"Loaded {len(self.data)} samples from OpenBookQA dataset {'with' if use_book else 'without'} facts from the book {'and' if use_clue else 'and not'} using clues")
 
     def get_label_tensor(self, label: str):
         mapping = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
@@ -28,6 +29,10 @@ class OBQADataset(Dataset):
         if self.use_book:
             facts = item['facts'][:self.n_facts]
             prompt_prefix = ', '.join(facts) + ". "
+
+        if self.use_clue:
+            clue = item['clue']
+            prompt_prefix += clue + ". "
 
         prompt = prompt_prefix + question
 

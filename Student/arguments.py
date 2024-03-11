@@ -23,6 +23,10 @@ class ModelArguments:
         default=3, metadata={"help": "Number of facts to use from the book data"}
     )
 
+    use_clue: Optional[bool] = field(
+        default=True, metadata={"help": "Whether to use the Clue data"}
+    )
+
 
 def parse_arguments():
     parser = HfArgumentParser((TrainingArguments, ModelArguments))
