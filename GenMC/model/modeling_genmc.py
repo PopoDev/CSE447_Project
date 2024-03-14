@@ -44,10 +44,10 @@ class GenMC(nn.Module):
         self.t5_model.parallelize(device_map)
 
 
-    def forward(self, q_ids, q_mask, qo_ids, qo_mask, choice_num, clue_ids=None, answers=None):
+    def forward(self, q_ids, q_mask, qo_ids, qo_mask, choice_num, clue_ids=None, answers=None, get_decoderqo = False):
         self.choice_num = choice_num
         if answers is not None and clue_ids is not None:
-            opt_score, output_sequences = self.get_option_score(q_ids, q_mask, qo_ids, qo_mask)
+            opt_score, output_sequences, _ = self.get_option_score(q_ids, q_mask, qo_ids, qo_mask)
             local_device = self.t5_model.device
             t5_output = self.t5_model(input_ids=q_ids.to(local_device), attention_mask=q_mask.to(local_device),
                                       labels=clue_ids.to(local_device))
@@ -55,7 +55,10 @@ class GenMC(nn.Module):
             loss = self.criterion(opt_score, answers)
             return self.alpha * loss + self.beta * loss_ans
         else:
-            opt_score, output_sequences = self.get_option_score(q_ids, q_mask, qo_ids, qo_mask)
+            if get_decoderqo:
+                opt_score, output_sequences, decoder_qo, output_sequences_mask = self.get_option_score(q_ids, q_mask, qo_ids, qo_mask)
+                return opt_score, output_sequences, decoder_qo, output_sequences_mask
+            opt_score, output_sequences, _, _ = self.get_option_score(q_ids, q_mask, qo_ids, qo_mask)
             return opt_score, output_sequences
 
     def get_option_score(self, q_ids, q_mask, qo_ids, qo_mask):
@@ -101,4 +104,4 @@ class GenMC(nn.Module):
         local_device = self.option_linear.device
         opt_score = self.option_linear(semantic_vec.to(local_device)).view(-1, self.choice_num)
 
-        return opt_score, output_sequences
+        return opt_score, output_sequences, decoder_qo, output_sequences_mask_ex

@@ -12,10 +12,12 @@ import argparse
 device = torch.device("cuda:0")
 
 
-def get_input_feature(samples, max_source_length, max_len_gen, choice_num, external_sent_num=None):
+def get_input_feature(samples, max_source_length, max_len_gen, choice_num, external_sent_num=None, tr = None):
     sep = ' \\n '
     output_clue = []
     answers = []
+    if tr is not None:
+        tokenizer = tr
     input_ids_q, attention_mask_q = [], []
     input_ids_qo, attention_mask_qo = [], []
     for sample in samples:
@@ -25,7 +27,7 @@ def get_input_feature(samples, max_source_length, max_len_gen, choice_num, exter
             answerKey = "A"
         question = sample['question']['stem']
         while len(sample['question']['choices']) < choice_num:
-            sample['question']['choices'].append({"text": "error", "para": "", "label":chr(ord('A')+len(sample)-1)})
+            sample['question']['choices'].append({"text": "error", "para": "", "label": chr(ord('A')+len(sample)-1)})
         for o_i, (opt, opt_name) in enumerate(zip(sample['question']['choices'], 'ABCDEFGH'[:choice_num])):
             option = opt['text']
             content = ""
@@ -242,7 +244,7 @@ if __name__ == '__main__':
 
     best_dev_acc, _, _ = eval(model, dev_examples, tokenizer, args.eval_batch_size, args.choice_num, args.max_len,
                               args.max_len_gen, args.external_sent_num)
-    print('best_dev_acc:',best_dev_acc)
+    print('best_dev_acc:', best_dev_acc)
     best_test_acc = 0
     for epoch in range(args.epoch_num):
         early_stop += 1
@@ -266,6 +268,7 @@ if __name__ == '__main__':
                 max_len_gen=args.max_len_gen,
                 choice_num=args.choice_num,
                 external_sent_num=args.external_sent_num)
+
             loss = model(q_ids, q_mask, qo_ids, qo_mask, args.choice_num, clue_ids, answers)
 
             loss = loss.mean()
