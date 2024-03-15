@@ -33,7 +33,8 @@ def main():
     trainer.evaluate(eval_dataset=val_dataset)
     trainer.predict(test_dataset=test_dataset)
 
-    train_loss_values = trainer.state.log_history["train_loss"]
+    train_loss_values = trainer.state.log_history
+    print(train_loss_values)
 
     # Plot loss graph
     plt.plot(train_loss_values, label="Loss")
