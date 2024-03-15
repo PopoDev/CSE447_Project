@@ -1,5 +1,6 @@
 import evaluate
 import numpy as np
+import matplotlib.pyplot as plt
 from transformers import Trainer, AutoTokenizer, AutoModelForMultipleChoice
 from arguments import parse_arguments
 from dataloader.dataset import get_openbookqa_dataset
@@ -31,6 +32,16 @@ def main():
     trainer.train()
     trainer.evaluate(eval_dataset=val_dataset)
     trainer.predict(test_dataset=test_dataset)
+
+    train_loss_values = trainer.state.log_history["train_loss"]
+
+    # Plot loss graph
+    plt.plot(train_loss_values, label="Loss")
+    plt.xlabel("Steps")
+    plt.ylabel("Loss")
+    plt.title("Training Loss")
+    plt.legend()
+    plt.show()
     
     model.save_pretrained(train_args.output_dir)
 
